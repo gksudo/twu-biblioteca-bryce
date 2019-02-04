@@ -1,5 +1,6 @@
 package com.twu.biblioteca;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,6 +11,7 @@ public class BibliotecaApp {
     private ArrayList<Book> checked_out_books;
     private ArrayList<Movie> movies;
     private ArrayList<Movie> checked_out_movies;
+    private ArrayList<User> users;
 
 
     public BibliotecaApp() {
@@ -18,8 +20,11 @@ public class BibliotecaApp {
 
         books = new ArrayList<>();
         checked_out_books = new ArrayList<>();
+
         movies = new ArrayList<>();
         checked_out_movies = new ArrayList<>();
+
+        users = new ArrayList<>();
 
         // for TDD
         books.add(new Book("Invisible Man", "Ralph Ellison", 1952));
@@ -29,6 +34,42 @@ public class BibliotecaApp {
         movies.add(new Movie("Bumblebee", 2018, "Travis Knight", 9));
         movies.add(new Movie("Vice", 2018, "Adam McKay", 4));
         movies.add(new Movie("Roma", 2018, "Alfonso Cuaron", 0));
+
+        users.add(new User("123-4567", "pass"));
+        users.add(new User("765-4321", "word"));
+    }
+
+    // login screen to be shown before the menu
+    public void logIn(Scanner input) {
+        User user = null;
+        String l_number;
+        String password;
+
+
+        System.out.println("Please log in. Type 'exit' to leave.");
+
+        while (user == null) {
+            System.out.println("Library Number: ");
+
+            l_number = input.nextLine();
+            if (l_number.equals("exit")) exit(0);
+
+            System.out.println("Password: ");
+            password = input.nextLine();
+            if (password.equals("exit")) exit(0);
+
+            for (User account : users) {
+                if (account.getLibrary_number().equals(l_number)
+                    && account.isPassword(password)) {
+                    user = account;
+                    break;
+                }
+            }
+
+            System.out.println("Sorry, that user doesn't exist.");
+        }
+
+        System.out.println("Welcome: " + user.getLibrary_number());
     }
 
     // main menu to be shown until user exits.
@@ -107,15 +148,6 @@ public class BibliotecaApp {
         }
 
         System.out.println(list);
-    }
-
-
-    public boolean hasBooks() {
-        return !books.isEmpty();
-    }
-
-    public boolean hasMovies() {
-        return !movies.isEmpty();
     }
 
     // menu option to check out a book
@@ -219,6 +251,7 @@ public class BibliotecaApp {
 
         return false;
     }
+
     public boolean hasMovie(String name) {
         for (Movie movie : movies) {
             if (movie.getName().equals(name)) {
@@ -229,12 +262,26 @@ public class BibliotecaApp {
         return false;
     }
 
+    public boolean hasBooks() {
+        return !books.isEmpty();
+    }
+
+    public boolean hasMovies() {
+        return !movies.isEmpty();
+    }
+
+    public boolean hasUsers() {
+        return !users.isEmpty();
+    }
+
+
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
         BibliotecaApp library = new BibliotecaApp();
 
+        library.logIn(input);
 
         while (true) {
             library.displayMenu();

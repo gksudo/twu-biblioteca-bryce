@@ -8,6 +8,7 @@ import static org.junit.Assert.assertThat;
 
 
 public class ExampleTest {
+    @Test
     @Ignore
     public void test() {
         assertThat(1, is(1));
@@ -67,5 +68,12 @@ public class ExampleTest {
         assertThat(library.hasMovie("Roma"), is(false));
         library.returnMovie("Roma");
         assertThat(library.hasMovie("Roma"), is(true));
+    }
+
+    @Test
+    public void bibliotecaHasUsers() {
+        BibliotecaApp library = new BibliotecaApp();
+
+        assertThat(library.hasUsers(), is(true));
     }
 }
