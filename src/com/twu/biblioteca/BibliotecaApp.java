@@ -8,11 +8,14 @@ import static java.lang.System.exit;
 
 public class BibliotecaApp {
     private ArrayList<Book> catalog;
+    private ArrayList<Book> checked_out_books;
 
     public BibliotecaApp() {
         // welcome message
         System.out.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
+
         catalog = new ArrayList<>();
+        checked_out_books = new ArrayList<>();
 
         // for TDD
         catalog.add(new Book("Invisible Man", "Ralph Ellison", 1952));
@@ -25,6 +28,7 @@ public class BibliotecaApp {
         System.out.println("\nWhat would you like to do?");
 
         System.out.println("l - List of Books");
+        System.out.println("c - Check out a book");
         System.out.println("q - Quit");
 
         System.out.println();
@@ -35,6 +39,11 @@ public class BibliotecaApp {
         switch (input.nextLine()) {
             case "l":
                 listBooks();
+                break;
+
+            case "c":
+                System.out.println("Please enter the title of the book you want to check out:");
+                checkOut(input.nextLine());
                 break;
 
             case "q":
@@ -62,7 +71,37 @@ public class BibliotecaApp {
         return !catalog.isEmpty();
     }
 
+    // menu option to check out a book
+    public void checkOut(String title) {
+        int last_index;
 
+        for (Book book : catalog) {
+            if (book.getTitle().equals(title)) {
+                checked_out_books.add(book);
+                break;
+            }
+        }
+
+        last_index = checked_out_books.size() - 1;
+
+        // book was successfully located & checked out
+        if (last_index > -1) {
+            catalog.remove(checked_out_books.get(last_index));
+            System.out.println("Thank you! Enjoy the book");
+        }
+    }
+
+
+    /** for TDD */
+    public boolean hasAvailable(String title) {
+        for (Book book : catalog) {
+            if (book.getTitle().equals(title)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 
     public static void main(String[] args) {
