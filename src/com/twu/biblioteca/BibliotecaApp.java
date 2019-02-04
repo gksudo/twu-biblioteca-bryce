@@ -2,6 +2,7 @@ package com.twu.biblioteca;
 
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class BibliotecaApp {
     private ArrayList<Book> catalog;
@@ -15,6 +16,24 @@ public class BibliotecaApp {
         catalog.add(new Book("Invisible Man", "Ralph Ellison", 1952));
         catalog.add(new Book("Shook One", "Charlamagne Tha God", 2018));
         catalog.add(new Book("Duma Key", "Stephen King", 2008));
+    }
+
+    // main menu to be shown until user exits.
+    public void displayMenu() {
+        System.out.println("\nWhat would you like to do?");
+
+        System.out.println("l - List of Books");
+
+        System.out.println();
+    }
+
+    // handles menu selection from command line
+    public void navigateMenu(Scanner input) {
+        switch (input.nextLine()) {
+            case "l":
+                listBooks();
+                break;
+        }
     }
 
 
@@ -34,11 +53,18 @@ public class BibliotecaApp {
     }
 
 
+
+
     public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
 
         BibliotecaApp library = new BibliotecaApp();
 
-        library.listBooks();
+
+        while (true) {
+            library.displayMenu();
+            library.navigateMenu(input);
+        }
     }
 
 }
