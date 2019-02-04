@@ -12,22 +12,22 @@ public class BibliotecaApp {
         catalog = new ArrayList<>();
 
         // for TDD
-        catalog.add(new Book("Invisible Man"));
-        catalog.add(new Book("Shook One"));
-        catalog.add(new Book("Duma Key"));
+        catalog.add(new Book("Invisible Man", "Ralph Ellison", 1952));
+        catalog.add(new Book("Shook One", "Charlamagne Tha God", 2018));
+        catalog.add(new Book("Duma Key", "Stephen King", 2008));
     }
 
 
     public void listBooks() {
         String list = "Here is a list of our books:\n";
+        list += "TITLE - AUTHOR - YEAR PUBLISHED\n\n";
 
         for (Book book : catalog) {
-            list += "\t" + book.getTitle() + "\n";
+            list += book.getTitle() + " - " + book.getAuthor() + " - " + book.getPublish_year() + "\n";
         }
 
         System.out.println(list);
     }
-
 
     public boolean hasBooks() {
         return !catalog.isEmpty();
