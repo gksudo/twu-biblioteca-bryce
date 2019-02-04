@@ -29,6 +29,7 @@ public class BibliotecaApp {
 
         System.out.println("l - List of Books");
         System.out.println("c - Check out a book");
+        System.out.println("r - Return a book");
         System.out.println("q - Quit");
 
         System.out.println();
@@ -44,6 +45,11 @@ public class BibliotecaApp {
             case "c":
                 System.out.println("Please enter the title of the book you want to check out:");
                 checkOut(input.nextLine());
+                break;
+
+            case "r":
+                System.out.println("Please enter the title of the book you want to return:");
+                returnBook(input.nextLine());
                 break;
 
             case "q":
@@ -91,6 +97,24 @@ public class BibliotecaApp {
         }
         else {
             System.out.println("Sorry, that book is not available");
+        }
+    }
+
+    // menu option to return a book
+    public void returnBook(String title) {
+        int last_index = catalog.size() - 1;
+
+        for (Book checked_out : checked_out_books) {
+            if (checked_out.getTitle().equals(title)) {
+                catalog.add(checked_out);
+                break;
+            }
+        }
+
+        // book was added
+        if (last_index != catalog.size() - 1) {
+            last_index = catalog.size() - 1;
+            checked_out_books.remove(catalog.get(last_index));
         }
     }
 
