@@ -32,4 +32,15 @@ public class ExampleTest {
         library.checkOut("Invisible Man");
         assertThat(library.hasAvailable("Invisible Man"), is(false));
     }
+
+    @Test
+    public void bookHasBeenReturned() {
+        BibliotecaApp library = new BibliotecaApp();
+
+        assertThat(library.hasAvailable("Invisible Man"), is(true));
+        library.checkOut("Invisible Man");
+        assertThat(library.hasAvailable("Invisible Man"), is(false));
+        library.returnBook("Invisible Man");
+        assertThat(library.hasAvailable("Invisible Man"), is(true));
+    }
 }
