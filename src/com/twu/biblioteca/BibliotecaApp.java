@@ -65,7 +65,7 @@ public class BibliotecaApp {
             if (logged_in == null) System.out.println("Sorry, that user doesn't exist.");
         }
 
-        System.out.println("Welcome: " + logged_in.getLibrary_number());
+        System.out.println("Welcome, " + logged_in.getName());
     }
 
 
