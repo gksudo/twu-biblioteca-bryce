@@ -89,6 +89,9 @@ public class BibliotecaApp {
             catalog.remove(checked_out_books.get(last_index));
             System.out.println("Thank you! Enjoy the book");
         }
+        else {
+            System.out.println("Sorry, that book is not available");
+        }
     }
 
 
