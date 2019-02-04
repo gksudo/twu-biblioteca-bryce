@@ -116,7 +116,9 @@ public class BibliotecaApp {
             last_index = catalog.size() - 1;
             checked_out_books.remove(catalog.get(last_index));
             System.out.println("Thank you for returning the book");
-
+        }
+        else {
+            System.out.println("That is not a valid book to return");
         }
     }
 
