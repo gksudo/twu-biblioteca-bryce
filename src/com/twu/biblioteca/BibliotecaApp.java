@@ -4,6 +4,8 @@ package com.twu.biblioteca;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import static java.lang.System.exit;
+
 public class BibliotecaApp {
     private ArrayList<Book> catalog;
 
@@ -23,6 +25,7 @@ public class BibliotecaApp {
         System.out.println("\nWhat would you like to do?");
 
         System.out.println("l - List of Books");
+        System.out.println("q - Quit");
 
         System.out.println();
     }
@@ -33,6 +36,10 @@ public class BibliotecaApp {
             case "l":
                 listBooks();
                 break;
+
+            case "q":
+                System.out.println("Goodbye!");
+                exit(0);
 
             default:
                 System.out.println("Please select a valid option!");
