@@ -25,6 +25,7 @@ public class ExampleTest {
     @Test
     public void bookHasBeenCheckedOut() {
         BibliotecaApp library = new BibliotecaApp();
+        library.logIn("123-4567", "pass");
 
         assertThat(library.hasBook("Invisible Man"), is(true));
         library.checkOutBook("Invisible Man");
@@ -34,9 +35,10 @@ public class ExampleTest {
     @Test
     public void bookHasBeenReturned() {
         BibliotecaApp library = new BibliotecaApp();
+        library.logIn("123-4567", "pass");
 
         assertThat(library.hasBook("Invisible Man"), is(true));
-        library.checkOutMovie("Invisible Man");
+        library.checkOutBook("Invisible Man");
         assertThat(library.hasBook("Invisible Man"), is(false));
         library.returnBook("Invisible Man");
         assertThat(library.hasBook("Invisible Man"), is(true));
@@ -53,6 +55,7 @@ public class ExampleTest {
     @Test
     public void movieHasBeenCheckedOut() {
         BibliotecaApp library = new BibliotecaApp();
+        library.logIn("123-4567", "pass");
 
         assertThat(library.hasMovie("Roma"), is(true));
         library.checkOutMovie("Roma");
@@ -62,6 +65,7 @@ public class ExampleTest {
     @Test
     public void movieHasBeenReturned() {
         BibliotecaApp library = new BibliotecaApp();
+        library.logIn("123-4567", "pass");
 
         assertThat(library.hasMovie("Roma"), is(true));
         library.checkOutMovie("Roma");

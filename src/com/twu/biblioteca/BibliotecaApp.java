@@ -8,22 +8,20 @@ import static java.lang.System.exit;
 
 public class BibliotecaApp {
     private ArrayList<Book> books;
-    private ArrayList<Book> checked_out_books;
     private ArrayList<Movie> movies;
-    private ArrayList<Movie> checked_out_movies;
     private ArrayList<User> users;
+    private User logged_in;
 
+    public BibliotecaApp(String library_number, String password) {
+
+    }
 
     public BibliotecaApp() {
         // welcome message
         System.out.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
 
         books = new ArrayList<>();
-        checked_out_books = new ArrayList<>();
-
         movies = new ArrayList<>();
-        checked_out_movies = new ArrayList<>();
-
         users = new ArrayList<>();
 
         // for TDD
@@ -35,20 +33,18 @@ public class BibliotecaApp {
         movies.add(new Movie("Vice", 2018, "Adam McKay", 4));
         movies.add(new Movie("Roma", 2018, "Alfonso Cuaron", 0));
 
-        users.add(new User("123-4567", "pass"));
-        users.add(new User("765-4321", "word"));
+        users.add(new User("123-4567", "pass", "John Porter", "email@gmail.com", "5555039"));
+        users.add(new User("765-4321", "word", "Sam Green", "address@gmail.com", "4438905"));
     }
 
     // login screen to be shown before the menu
     public void logIn(Scanner input) {
-        User user = null;
         String l_number;
         String password;
 
-
         System.out.println("Please log in. Type 'exit' to leave.");
 
-        while (user == null) {
+        while (logged_in == null) {
             System.out.println("Library Number: ");
 
             l_number = input.nextLine();
@@ -61,27 +57,30 @@ public class BibliotecaApp {
             for (User account : users) {
                 if (account.getLibrary_number().equals(l_number)
                     && account.isPassword(password)) {
-                    user = account;
+                    logged_in = account;
                     break;
                 }
             }
 
-            System.out.println("Sorry, that user doesn't exist.");
+            if (logged_in == null) System.out.println("Sorry, that user doesn't exist.");
         }
 
-        System.out.println("Welcome: " + user.getLibrary_number());
+        System.out.println("Welcome: " + logged_in.getLibrary_number());
     }
+
+
 
     // main menu to be shown until user exits.
     public void displayMenu() {
         System.out.println("\nWhat would you like to do?");
 
-        System.out.println("1 - List of Books");
-        System.out.println("2 - List of Movies");
+        System.out.println("1 - List of books");
+        System.out.println("2 - List of movies");
         System.out.println("3 - Check out a book");
         System.out.println("4 - Check out a movie");
         System.out.println("5 - Return a book");
         System.out.println("6 - Return a movie");
+        System.out.println("7 - View account info");
         System.out.println("q - Quit");
 
         System.out.println();
@@ -116,6 +115,11 @@ public class BibliotecaApp {
             case "6":
                 System.out.println("Please enter the title of the movie you want to return:");
                 returnMovie(input.nextLine());
+                break;
+
+            case "7":
+                System.out.println("NAME - EMAIL ADDRESS - PHONE NUMBER");
+                System.out.println("" + logged_in.getName() + " - " + logged_in.getEmail() + " - " + logged_in.getPhone());
                 break;
 
             case "q":
@@ -156,16 +160,16 @@ public class BibliotecaApp {
 
         for (Book book : books) {
             if (book.getTitle().equals(title)) {
-                checked_out_books.add(book);
+                logged_in.checkOutBook(book);
                 break;
             }
         }
 
-        last_index = checked_out_books.size() - 1;
+        last_index = logged_in.getMy_books().size() - 1;
 
         // book was successfully located & checked out
         if (last_index > -1) {
-            books.remove(checked_out_books.get(last_index));
+            books.remove(logged_in.getMy_books().get(last_index));
             System.out.println("Thank you! Enjoy the book");
         }
         else {
@@ -179,16 +183,16 @@ public class BibliotecaApp {
 
         for (Movie movie : movies) {
             if (movie.getName().equals(name)) {
-                checked_out_movies.add(movie);
+                logged_in.checkOutMovie(movie);
                 break;
             }
         }
 
-        last_index = checked_out_movies.size() - 1;
+        last_index = logged_in.getMy_movies().size() - 1;
 
-        // book was successfully located & checked out
+        // movie was successfully located & checked out
         if (last_index > -1) {
-            movies.remove(checked_out_movies.get(last_index));
+            movies.remove(logged_in.getMy_movies().get(last_index));
             System.out.println("Thank you! Enjoy the movie");
         }
         else {
@@ -200,7 +204,7 @@ public class BibliotecaApp {
     public void returnBook(String title) {
         int last_index = books.size() - 1;
 
-        for (Book checked_out : checked_out_books) {
+        for (Book checked_out : logged_in.getMy_books()) {
             if (checked_out.getTitle().equals(title)) {
                 books.add(checked_out);
                 break;
@@ -210,7 +214,7 @@ public class BibliotecaApp {
         // book was added
         if (last_index != books.size() - 1) {
             last_index = books.size() - 1;
-            checked_out_books.remove(books.get(last_index));
+            logged_in.returnBook(books.get(last_index));
             System.out.println("Thank you for returning the book");
         }
         else {
@@ -222,17 +226,17 @@ public class BibliotecaApp {
     public void returnMovie(String name) {
         int last_index = movies.size() - 1;
 
-        for (Movie checked_out : checked_out_movies) {
+        for (Movie checked_out : logged_in.getMy_movies()) {
             if (checked_out.getName().equals(name)) {
                 movies.add(checked_out);
                 break;
             }
         }
 
-        // book was added
+        // movie was added
         if (last_index != movies.size() - 1) {
             last_index = movies.size() - 1;
-            checked_out_movies.remove(movies.get(last_index));
+            logged_in.returnMovie(movies.get(last_index));
             System.out.println("Thank you for returning the movie");
         }
         else {
@@ -272,6 +276,16 @@ public class BibliotecaApp {
 
     public boolean hasUsers() {
         return !users.isEmpty();
+    }
+
+    public void logIn(String library_number, String password) {
+        for (User account : users) {
+            if (account.getLibrary_number().equals(library_number)
+                    && account.isPassword(password)) {
+                logged_in = account;
+                break;
+            }
+        }
     }
 
 
