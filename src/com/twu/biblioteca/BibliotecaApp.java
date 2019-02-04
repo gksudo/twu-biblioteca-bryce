@@ -6,27 +6,37 @@ import java.util.Scanner;
 import static java.lang.System.exit;
 
 public class BibliotecaApp {
-    private ArrayList<Book> catalog;
+    private ArrayList<Book> books;
     private ArrayList<Book> checked_out_books;
+    private ArrayList<Movie> movies;
+    private ArrayList<Movie> checked_out_movies;
+
 
     public BibliotecaApp() {
         // welcome message
         System.out.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
 
-        catalog = new ArrayList<>();
+        books = new ArrayList<>();
         checked_out_books = new ArrayList<>();
+        movies = new ArrayList<>();
+        checked_out_movies = new ArrayList<>();
 
         // for TDD
-        catalog.add(new Book("Invisible Man", "Ralph Ellison", 1952));
-        catalog.add(new Book("Shook One", "Charlamagne Tha God", 2018));
-        catalog.add(new Book("Duma Key", "Stephen King", 2008));
+        books.add(new Book("Invisible Man", "Ralph Ellison", 1952));
+        books.add(new Book("Shook One", "Charlamagne Tha God", 2018));
+        books.add(new Book("Duma Key", "Stephen King", 2008));
+
+        movies.add(new Movie("Bumblebee", 2018, "Travis Knight", 9));
+        movies.add(new Movie("Vice", 2018, "Adam McKay", 4));
+        movies.add(new Movie("Roma", 2018, "Alfonso Cuaron", 0));
     }
 
     // main menu to be shown until user exits.
     public void displayMenu() {
         System.out.println("\nWhat would you like to do?");
 
-        System.out.println("l - List of Books");
+        System.out.println("b - List of Books");
+        System.out.println("m - List of Movies");
         System.out.println("c - Check out a book");
         System.out.println("r - Return a book");
         System.out.println("q - Quit");
@@ -37,8 +47,12 @@ public class BibliotecaApp {
     // handles menu selection from command line
     public void navigateMenu(Scanner input) {
         switch (input.nextLine()) {
-            case "l":
+            case "b":
                 listBooks();
+                break;
+
+            case "m":
+                listMovies();
                 break;
 
             case "c":
@@ -60,27 +74,42 @@ public class BibliotecaApp {
         }
     }
 
-
     public void listBooks() {
         String list = "Here is a list of our books:\n";
         list += "TITLE - AUTHOR - YEAR PUBLISHED\n\n";
 
-        for (Book book : catalog) {
+        for (Book book : books) {
             list += book.getTitle() + " - " + book.getAuthor() + " - " + book.getPublish_year() + "\n";
         }
 
         System.out.println(list);
     }
 
+    private void listMovies() {
+        String list = "Here is a list of our movies:\n";
+        list += "NAME - YEAR - DIRECTOR - RATING\n\n";
+
+        for (Movie movie : movies) {
+            list += movie.getName() + " - " + movie.getYear() + " - " + movie.getDirector() + " - " + movie.getRating() + "\n";
+        }
+
+        System.out.println(list);
+    }
+
+
     public boolean hasBooks() {
-        return !catalog.isEmpty();
+        return !books.isEmpty();
+    }
+
+    public boolean hasMovies() {
+        return !movies.isEmpty();
     }
 
     // menu option to check out a book
     public void checkOut(String title) {
         int last_index;
 
-        for (Book book : catalog) {
+        for (Book book : books) {
             if (book.getTitle().equals(title)) {
                 checked_out_books.add(book);
                 break;
@@ -91,7 +120,7 @@ public class BibliotecaApp {
 
         // book was successfully located & checked out
         if (last_index > -1) {
-            catalog.remove(checked_out_books.get(last_index));
+            books.remove(checked_out_books.get(last_index));
             System.out.println("Thank you! Enjoy the book");
         }
         else {
@@ -101,19 +130,19 @@ public class BibliotecaApp {
 
     // menu option to return a book
     public void returnBook(String title) {
-        int last_index = catalog.size() - 1;
+        int last_index = books.size() - 1;
 
         for (Book checked_out : checked_out_books) {
             if (checked_out.getTitle().equals(title)) {
-                catalog.add(checked_out);
+                books.add(checked_out);
                 break;
             }
         }
 
         // book was added
-        if (last_index != catalog.size() - 1) {
-            last_index = catalog.size() - 1;
-            checked_out_books.remove(catalog.get(last_index));
+        if (last_index != books.size() - 1) {
+            last_index = books.size() - 1;
+            checked_out_books.remove(books.get(last_index));
             System.out.println("Thank you for returning the book");
         }
         else {
@@ -124,7 +153,7 @@ public class BibliotecaApp {
 
     /** for TDD */
     public boolean hasAvailable(String title) {
-        for (Book book : catalog) {
+        for (Book book : books) {
             if (book.getTitle().equals(title)) {
                 return true;
             }

@@ -40,4 +40,11 @@ public class ExampleTest {
         library.returnBook("Invisible Man");
         assertThat(library.hasAvailable("Invisible Man"), is(true));
     }
+
+    @Test
+    public void biliotecaHasBooks() {
+        BibliotecaApp library = new BibliotecaApp();
+
+        assertThat(library.hasMovies(), is(true));
+    }
 }
