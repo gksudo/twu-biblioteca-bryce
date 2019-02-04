@@ -1,6 +1,5 @@
 package com.twu.biblioteca;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -12,9 +11,6 @@ public class BibliotecaApp {
     private ArrayList<User> users;
     private User logged_in;
 
-    public BibliotecaApp(String library_number, String password) {
-
-    }
 
     public BibliotecaApp() {
         // welcome message
