@@ -25,26 +25,47 @@ public class ExampleTest {
     public void bookHasBeenCheckedOut() {
         BibliotecaApp library = new BibliotecaApp();
 
-        assertThat(library.hasAvailable("Invisible Man"), is(true));
-        library.checkOut("Invisible Man");
-        assertThat(library.hasAvailable("Invisible Man"), is(false));
+        assertThat(library.hasBook("Invisible Man"), is(true));
+        library.checkOutBook("Invisible Man");
+        assertThat(library.hasBook("Invisible Man"), is(false));
     }
 
     @Test
     public void bookHasBeenReturned() {
         BibliotecaApp library = new BibliotecaApp();
 
-        assertThat(library.hasAvailable("Invisible Man"), is(true));
-        library.checkOut("Invisible Man");
-        assertThat(library.hasAvailable("Invisible Man"), is(false));
+        assertThat(library.hasBook("Invisible Man"), is(true));
+        library.checkOutMovie("Invisible Man");
+        assertThat(library.hasBook("Invisible Man"), is(false));
         library.returnBook("Invisible Man");
-        assertThat(library.hasAvailable("Invisible Man"), is(true));
+        assertThat(library.hasBook("Invisible Man"), is(true));
     }
 
     @Test
-    public void biliotecaHasBooks() {
+    @Ignore
+    public void biliotecaHasMovies() {
         BibliotecaApp library = new BibliotecaApp();
 
         assertThat(library.hasMovies(), is(true));
+    }
+
+    @Test
+    public void movieHasBeenCheckedOut() {
+        BibliotecaApp library = new BibliotecaApp();
+
+        assertThat(library.hasMovie("Roma"), is(true));
+        library.checkOutMovie("Roma");
+        assertThat(library.hasMovie("Roma"), is(false));
+    }
+
+    @Test
+    public void movieHasBeenReturned() {
+        BibliotecaApp library = new BibliotecaApp();
+
+        assertThat(library.hasMovie("Roma"), is(true));
+        library.checkOutMovie("Roma");
+        assertThat(library.hasMovie("Roma"), is(false));
+        library.returnMovie("Roma");
+        assertThat(library.hasMovie("Roma"), is(true));
     }
 }

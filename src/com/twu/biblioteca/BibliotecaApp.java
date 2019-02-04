@@ -35,10 +35,12 @@ public class BibliotecaApp {
     public void displayMenu() {
         System.out.println("\nWhat would you like to do?");
 
-        System.out.println("b - List of Books");
-        System.out.println("m - List of Movies");
-        System.out.println("c - Check out a book");
-        System.out.println("r - Return a book");
+        System.out.println("1 - List of Books");
+        System.out.println("2 - List of Movies");
+        System.out.println("3 - Check out a book");
+        System.out.println("4 - Check out a movie");
+        System.out.println("5 - Return a book");
+        System.out.println("6 - Return a movie");
         System.out.println("q - Quit");
 
         System.out.println();
@@ -47,22 +49,32 @@ public class BibliotecaApp {
     // handles menu selection from command line
     public void navigateMenu(Scanner input) {
         switch (input.nextLine()) {
-            case "b":
+            case "1":
                 listBooks();
                 break;
 
-            case "m":
+            case "2":
                 listMovies();
                 break;
 
-            case "c":
+            case "3":
                 System.out.println("Please enter the title of the book you want to check out:");
-                checkOut(input.nextLine());
+                checkOutBook(input.nextLine());
                 break;
 
-            case "r":
+            case "4":
+                System.out.println("Please enter the title of the movie you want to check out:");
+                checkOutMovie(input.nextLine());
+                break;
+
+            case "5":
                 System.out.println("Please enter the title of the book you want to return:");
                 returnBook(input.nextLine());
+                break;
+
+            case "6":
+                System.out.println("Please enter the title of the movie you want to return:");
+                returnMovie(input.nextLine());
                 break;
 
             case "q":
@@ -73,6 +85,7 @@ public class BibliotecaApp {
                 System.out.println("Please select a valid option!");
         }
     }
+
 
     public void listBooks() {
         String list = "Here is a list of our books:\n";
@@ -106,7 +119,7 @@ public class BibliotecaApp {
     }
 
     // menu option to check out a book
-    public void checkOut(String title) {
+    public void checkOutBook(String title) {
         int last_index;
 
         for (Book book : books) {
@@ -125,6 +138,29 @@ public class BibliotecaApp {
         }
         else {
             System.out.println("Sorry, that book is not available");
+        }
+    }
+
+    // menu option to check out a movie
+    public void checkOutMovie(String name) {
+        int last_index;
+
+        for (Movie movie : movies) {
+            if (movie.getName().equals(name)) {
+                checked_out_movies.add(movie);
+                break;
+            }
+        }
+
+        last_index = checked_out_movies.size() - 1;
+
+        // book was successfully located & checked out
+        if (last_index > -1) {
+            movies.remove(checked_out_movies.get(last_index));
+            System.out.println("Thank you! Enjoy the movie");
+        }
+        else {
+            System.out.println("Sorry, that movie is not available");
         }
     }
 
@@ -150,11 +186,42 @@ public class BibliotecaApp {
         }
     }
 
+    // menu option to return a movie
+    public void returnMovie(String name) {
+        int last_index = movies.size() - 1;
+
+        for (Movie checked_out : checked_out_movies) {
+            if (checked_out.getName().equals(name)) {
+                movies.add(checked_out);
+                break;
+            }
+        }
+
+        // book was added
+        if (last_index != movies.size() - 1) {
+            last_index = movies.size() - 1;
+            checked_out_movies.remove(movies.get(last_index));
+            System.out.println("Thank you for returning the movie");
+        }
+        else {
+            System.out.println("That is not a valid movie to return");
+        }
+    }
+
 
     /** for TDD */
-    public boolean hasAvailable(String title) {
+    public boolean hasBook(String title) {
         for (Book book : books) {
             if (book.getTitle().equals(title)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public boolean hasMovie(String name) {
+        for (Movie movie : movies) {
+            if (movie.getName().equals(name)) {
                 return true;
             }
         }
