@@ -87,6 +87,7 @@ public class BibliotecaApp {
         // book was successfully located & checked out
         if (last_index > -1) {
             catalog.remove(checked_out_books.get(last_index));
+            System.out.println("Thank you! Enjoy the book");
         }
     }
 
